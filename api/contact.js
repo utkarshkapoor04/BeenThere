@@ -19,8 +19,8 @@ module.exports = async (req, res) => {
   const { SUPABASE_URL, SUPABASE_ANON_KEY, GMAIL_USER, GMAIL_APP_PASSWORD } = process.env;
   const OWNER_EMAIL = process.env.OWNER_EMAIL || GMAIL_USER;
   if (!SUPABASE_URL || !SUPABASE_ANON_KEY || !GMAIL_USER || !GMAIL_APP_PASSWORD) {
-    console.error('Missing environment variables');
-    return res.status(500).json({ error: 'Server is not configured yet.' });
+    const missing = ['SUPABASE_URL', 'SUPABASE_ANON_KEY', 'GMAIL_USER', 'GMAIL_APP_PASSWORD'].filter((k) => !process.env[k]);
+    return res.status(500).json({ error: 'Missing settings: ' + missing.join(', ') });
   }
 
   let body = req.body;
